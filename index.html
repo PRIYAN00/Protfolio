@@ -1,35 +1,1495 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Priyanthan Mahindaraj | Home Page</title>
-    <link href="css/main.css" rel="stylesheet" >
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Priyanthan Mahindaraj — Platform Engineer L2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap"
+      rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+      /* ==============================
+       TOKENS & RESET
+    ============================== */
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --blue: #3b82f6;
+        --blue-dim: #1d4ed8;
+        --cyan: #22d3ee;
+        --violet: #818cf8;
+        --green: #4ade80;
+
+        --bg: #060c17;
+        --surface: rgba(255, 255, 255, 0.04);
+        --surface-2: rgba(255, 255, 255, 0.07);
+        --border: rgba(255, 255, 255, 0.09);
+        --border-hi: rgba(59, 130, 246, 0.35);
+
+        --text: #f0f4ff;
+        --muted: #7a8aa0;
+        --caption: #4a5568;
+
+        --blur: blur(18px);
+        --radius: 1.25rem;
+        --radius-sm: 0.625rem;
+        --shadow: 0 8px 40px rgba(0, 0, 0, 0.45);
+        --shadow-glow: 0 0 40px rgba(59, 130, 246, 0.12);
+
+        --t: 0.25s ease;
+      }
+
+      [data-theme="light"] {
+        --bg: #eef2f9;
+        --surface: rgba(255, 255, 255, 0.55);
+        --surface-2: rgba(255, 255, 255, 0.75);
+        --border: rgba(255, 255, 255, 0.7);
+        --border-hi: rgba(59, 130, 246, 0.4);
+        --text: #0f172a;
+        --muted: #475569;
+        --caption: #94a3b8;
+        --shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+        --shadow-glow: 0 0 40px rgba(59, 130, 246, 0.08);
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Space Grotesk", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        overflow-x: hidden;
+        transition:
+          background 0.4s,
+          color 0.4s;
+      }
+
+      /* ==============================
+       ANIMATED BG ORBS
+    ============================== */
+      .orbs {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        overflow: hidden;
+        pointer-events: none;
+      }
+      .orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(100px);
+        opacity: 0.35;
+      }
+      .orb-1 {
+        width: 600px;
+        height: 600px;
+        background: #1a3a6b;
+        top: -15%;
+        left: -10%;
+        animation: drift 22s infinite alternate;
+      }
+      .orb-2 {
+        width: 500px;
+        height: 500px;
+        background: #1e0a4a;
+        bottom: -10%;
+        right: -8%;
+        animation: drift 18s infinite alternate-reverse;
+      }
+      .orb-3 {
+        width: 380px;
+        height: 380px;
+        background: #0a2e40;
+        top: 40%;
+        left: 35%;
+        animation: drift 26s infinite alternate;
+      }
+
+      [data-theme="light"] .orb-1 {
+        background: #bfdbfe;
+        opacity: 0.5;
+      }
+      [data-theme="light"] .orb-2 {
+        background: #ddd6fe;
+        opacity: 0.4;
+      }
+      [data-theme="light"] .orb-3 {
+        background: #bae6fd;
+        opacity: 0.4;
+      }
+
+      @keyframes drift {
+        0% {
+          transform: translate(0, 0) scale(1);
+        }
+        50% {
+          transform: translate(60px, 40px) scale(1.08);
+        }
+        100% {
+          transform: translate(-40px, 70px) scale(0.95);
+        }
+      }
+
+      /* ==============================
+       GLASS UTILITY
+    ============================== */
+      .glass {
+        background: var(--surface);
+        backdrop-filter: var(--blur);
+        -webkit-backdrop-filter: var(--blur);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+      }
+      .glass:hover {
+        border-color: var(--border-hi);
+        box-shadow: var(--shadow), var(--shadow-glow);
+      }
+
+      /* ==============================
+       NAV
+    ============================== */
+      .nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 999;
+        border-bottom: 1px solid var(--border);
+        transition: box-shadow var(--t);
+      }
+      .nav.scrolled {
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+      }
+
+      .nav-inner {
+        max-width: 1380px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        height: 66px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .nav-logo {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--blue);
+        text-decoration: none;
+        letter-spacing: -0.02em;
+      }
+      .nav-logo span {
+        color: var(--muted);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 0.25rem;
+        list-style: none;
+      }
+      .nav-links a {
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: var(--muted);
+        text-decoration: none;
+        padding: 0.4rem 0.85rem;
+        border-radius: var(--radius-sm);
+        transition:
+          color var(--t),
+          background var(--t);
+      }
+      .nav-links a:hover {
+        color: var(--text);
+        background: var(--surface-2);
+      }
+
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .theme-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        color: var(--muted);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        transition:
+          color var(--t),
+          transform var(--t),
+          background var(--t);
+      }
+      .theme-btn:hover {
+        color: var(--blue);
+        transform: scale(1.1);
+        background: var(--surface);
+      }
+
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+      }
+      .hamburger span {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: var(--muted);
+        border-radius: 2px;
+        transition: var(--t);
+      }
+      .hamburger.open span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+      }
+      .hamburger.open span:nth-child(2) {
+        opacity: 0;
+      }
+      .hamburger.open span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+      }
+
+      /* ==============================
+       MAIN GRID
+    ============================== */
+      .grid {
+        max-width: 1380px;
+        margin: 0 auto;
+        padding: 100px 2rem 3rem;
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        grid-auto-rows: minmax(120px, auto);
+        gap: 1.25rem;
+      }
+
+      .card {
+        border-radius: var(--radius);
+        padding: 1.75rem;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+        transition:
+          transform var(--t),
+          border-color var(--t),
+          box-shadow var(--t);
+      }
+      .card:hover {
+        transform: translateY(-4px);
+      }
+
+      /* Reveal animation */
+      .card {
+        opacity: 0;
+        transform: translateY(28px);
+      }
+      .card.visible {
+        opacity: 1;
+        transform: translateY(0);
+        transition:
+          opacity 0.6s ease,
+          transform 0.6s ease,
+          border-color var(--t),
+          box-shadow var(--t);
+      }
+
+      /* ==============================
+       CARD SPANS
+    ============================== */
+      .c-hero {
+        grid-column: span 8;
+        grid-row: span 2;
+      }
+      .c-status {
+        grid-column: span 4;
+        grid-row: span 1;
+      }
+      .c-about {
+        grid-column: span 4;
+        grid-row: span 1;
+      }
+      .c-skills {
+        grid-column: span 4;
+        grid-row: span 4;
+      }
+      .c-experience {
+        grid-column: span 8;
+        grid-row: span 3;
+      }
+      .c-proj-1 {
+        grid-column: span 4;
+        grid-row: span 2;
+      }
+      .c-proj-2 {
+        grid-column: span 4;
+        grid-row: span 2;
+      }
+      .c-proj-3 {
+        grid-column: span 4;
+        grid-row: span 2;
+      }
+      .c-education {
+        grid-column: span 8;
+        grid-row: span 1;
+      }
+      .c-contact {
+        grid-column: span 12;
+        grid-row: span 1;
+      }
+
+      /* ==============================
+       SECTION LABEL (eyebrow)
+    ============================== */
+      .eyebrow {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.7rem;
+        font-weight: 400;
+        color: var(--blue);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 0.6rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+      .eyebrow::before {
+        content: "//";
+        color: var(--caption);
+      }
+
+      .card-title {
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .card-title i {
+        color: var(--blue);
+        font-size: 0.95rem;
+      }
+
+      /* ==============================
+       HERO CARD
+    ============================== */
+      .c-hero {
+        flex-direction: row;
+        align-items: center;
+        gap: 2rem;
+        background: linear-gradient(
+          135deg,
+          rgba(29, 78, 216, 0.12),
+          rgba(17, 24, 39, 0)
+        );
+      }
+
+      .hero-text {
+        flex: 1;
+      }
+
+      .hero-name {
+        font-size: clamp(1.9rem, 2.8vw, 2.8rem);
+        font-weight: 700;
+        line-height: 1.15;
+        margin-bottom: 0.3rem;
+        letter-spacing: -0.03em;
+      }
+      .hero-name .grad {
+        background: linear-gradient(100deg, var(--blue), var(--cyan));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .hero-role {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.88rem;
+        font-weight: 400;
+        color: var(--cyan);
+        margin-bottom: 1.1rem;
+      }
+
+      .hero-bio {
+        font-size: 0.9rem;
+        color: var(--muted);
+        line-height: 1.75;
+        margin-bottom: 1.6rem;
+        max-width: 520px;
+      }
+
+      .hero-btns {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.55rem 1.15rem;
+        border-radius: var(--radius-sm);
+        font-family: inherit;
+        font-size: 0.83rem;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        border: 1px solid var(--border);
+        background: var(--surface-2);
+        color: var(--text);
+        transition:
+          background var(--t),
+          color var(--t),
+          border-color var(--t),
+          transform var(--t);
+      }
+      .btn:hover {
+        background: var(--blue);
+        color: #fff;
+        border-color: var(--blue);
+        transform: translateY(-1px);
+      }
+      .btn-primary {
+        background: var(--blue);
+        color: #fff;
+        border-color: var(--blue);
+      }
+      .btn-primary:hover {
+        background: var(--blue-dim);
+        border-color: var(--blue-dim);
+      }
+
+      /* Terminal avatar */
+      .hero-terminal {
+        width: 160px;
+        height: 160px;
+        flex-shrink: 0;
+        border-radius: 1.1rem;
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        font-family: "JetBrains Mono", monospace;
+      }
+      .term-bar {
+        height: 28px;
+        background: rgba(255, 255, 255, 0.04);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 0 10px;
+      }
+      .term-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+      .term-dot:nth-child(1) {
+        background: #ff5f56;
+      }
+      .term-dot:nth-child(2) {
+        background: #febc2e;
+      }
+      .term-dot:nth-child(3) {
+        background: #28c840;
+      }
+      .term-body {
+        flex: 1;
+        padding: 10px;
+        font-size: 0.62rem;
+        color: var(--muted);
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+      .term-line {
+        display: flex;
+        gap: 4px;
+      }
+      .term-prompt {
+        color: var(--cyan);
+      }
+      .term-cmd {
+        color: var(--text);
+      }
+      .term-out {
+        color: var(--green);
+        padding-left: 0;
+      }
+      .term-cursor {
+        display: inline-block;
+        width: 6px;
+        height: 11px;
+        background: var(--cyan);
+        animation: blink 1.1s steps(1) infinite;
+        vertical-align: text-bottom;
+      }
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+
+      /* ==============================
+       STATUS CARD
+    ============================== */
+      .c-status {
+        background: linear-gradient(
+          135deg,
+          rgba(34, 211, 238, 0.06),
+          transparent
+        );
+      }
+      .status-row {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-size: 0.82rem;
+        color: var(--muted);
+        margin-bottom: 0.5rem;
+      }
+      .dot-green {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--green);
+        flex-shrink: 0;
+        animation: pulse 2s infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.6;
+          transform: scale(0.85);
+        }
+      }
+
+      .stat-row {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 0.75rem;
+      }
+      .stat {
+        flex: 1;
+        text-align: center;
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 0.75rem 0.5rem;
+      }
+      .stat-n {
+        display: block;
+        font-size: 1.7rem;
+        font-weight: 700;
+        color: var(--blue);
+        line-height: 1;
+      }
+      .stat-l {
+        font-size: 0.7rem;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+
+      /* ==============================
+       ABOUT CARD
+    ============================== */
+      .about-text {
+        font-size: 0.875rem;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      /* ==============================
+       SKILLS CARD
+    ============================== */
+      .skill-group {
+        margin-bottom: 1.1rem;
+      }
+      .skill-group:last-child {
+        margin-bottom: 0;
+      }
+      .skill-cat {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.68rem;
+        color: var(--caption);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 0.45rem;
+      }
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+      }
+      .tag {
+        font-size: 0.75rem;
+        font-weight: 500;
+        padding: 0.28rem 0.7rem;
+        border-radius: 0.45rem;
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        color: var(--text);
+        transition:
+          border-color var(--t),
+          color var(--t);
+      }
+      .tag:hover {
+        border-color: var(--blue);
+        color: var(--blue);
+      }
+
+      /* ==============================
+       EXPERIENCE CARD
+    ============================== */
+      .timeline {
+        display: flex;
+        flex-direction: column;
+        gap: 1.4rem;
+      }
+      .tl-item {
+        padding-left: 1rem;
+        border-left: 2px solid var(--border);
+        position: relative;
+        transition: border-color var(--t);
+      }
+      .tl-item::before {
+        content: "";
+        position: absolute;
+        left: -5px;
+        top: 4px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--blue);
+      }
+      .tl-item:hover {
+        border-left-color: var(--blue);
+      }
+      .tl-role {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--text);
+      }
+      .tl-meta {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.7rem;
+        color: var(--blue);
+        margin: 0.2rem 0 0.5rem;
+      }
+      .tl-bullets {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+      .tl-bullets li {
+        font-size: 0.82rem;
+        color: var(--muted);
+        padding-left: 1rem;
+        position: relative;
+        line-height: 1.6;
+      }
+      .tl-bullets li::before {
+        content: "›";
+        position: absolute;
+        left: 0;
+        color: var(--cyan);
+      }
+
+      /* ==============================
+       PROJECT CARDS
+    ============================== */
+      .proj-icon {
+        font-size: 1.7rem;
+        color: var(--blue);
+        margin-bottom: 0.75rem;
+      }
+      .proj-name {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 0.5rem;
+        line-height: 1.3;
+      }
+      .proj-desc {
+        font-size: 0.82rem;
+        color: var(--muted);
+        line-height: 1.7;
+        flex: 1;
+        margin-bottom: 1rem;
+      }
+      .proj-list {
+        list-style: none;
+        margin-bottom: 1rem;
+      }
+      .proj-list li {
+        font-size: 0.78rem;
+        color: var(--muted);
+        padding: 0.25rem 0;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        gap: 0.4rem;
+      }
+      .proj-list li strong {
+        color: var(--text);
+        white-space: nowrap;
+      }
+      .mt-a {
+        margin-top: auto;
+      }
+
+      /* ==============================
+       EDUCATION CARD
+    ============================== */
+      .edu-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 0.75rem;
+        margin-top: 0.25rem;
+      }
+      .edu-item {
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 0.9rem 1rem;
+        transition: border-color var(--t);
+      }
+      .edu-item:hover {
+        border-color: var(--blue);
+      }
+      .edu-degree {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 0.25rem;
+      }
+      .edu-school {
+        font-size: 0.75rem;
+        color: var(--muted);
+      }
+
+      /* ==============================
+       CONTACT CARD
+    ============================== */
+      .c-contact {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 2rem;
+        flex-wrap: wrap;
+        background: linear-gradient(
+          120deg,
+          rgba(29, 78, 216, 0.1),
+          rgba(17, 24, 39, 0)
+        );
+      }
+      .contact-heading {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 0.3rem;
+      }
+      .contact-sub {
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+      .contact-links {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+      .contact-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.83rem;
+        font-weight: 500;
+        color: var(--text);
+        text-decoration: none;
+        padding: 0.55rem 1.1rem;
+        border-radius: var(--radius-sm);
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        transition:
+          background var(--t),
+          color var(--t),
+          border-color var(--t);
+      }
+      .contact-link:hover {
+        background: var(--blue);
+        color: #fff;
+        border-color: var(--blue);
+      }
+
+      /* ==============================
+       FOOTER
+    ============================== */
+      footer {
+        text-align: center;
+        padding: 2rem;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.72rem;
+        color: var(--caption);
+      }
+
+      /* ==============================
+       MOBILE NAV OVERLAY
+    ============================== */
+      .mobile-nav {
+        display: none;
+        position: fixed;
+        top: 66px;
+        left: 0;
+        right: 0;
+        z-index: 998;
+        background: rgba(6, 12, 23, 0.97);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--border);
+        padding: 1.5rem 2rem;
+      }
+      .mobile-nav.open {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .mobile-nav a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.95rem;
+        font-weight: 500;
+        padding: 0.6rem 0;
+        border-bottom: 1px solid var(--border);
+        transition: color var(--t);
+      }
+      .mobile-nav a:last-child {
+        border-bottom: none;
+      }
+      .mobile-nav a:hover {
+        color: var(--blue);
+      }
+
+      /* ==============================
+       RESPONSIVE
+    ============================== */
+      @media (max-width: 1100px) {
+        .grid {
+          grid-template-columns: repeat(8, 1fr);
+        }
+        .c-hero {
+          grid-column: span 8;
+        }
+        .c-status {
+          grid-column: span 4;
+        }
+        .c-about {
+          grid-column: span 4;
+        }
+        .c-skills {
+          grid-column: span 4;
+          grid-row: span 5;
+        }
+        .c-experience {
+          grid-column: span 8;
+          grid-row: auto;
+        }
+        .c-proj-1,
+        .c-proj-2,
+        .c-proj-3 {
+          grid-column: span 4;
+        }
+        .c-education {
+          grid-column: span 8;
+        }
+        .c-contact {
+          grid-column: span 8;
+        }
+        .nav-links {
+          display: none;
+        }
+        .hamburger {
+          display: flex;
+        }
+      }
+
+      @media (max-width: 700px) {
+        .grid {
+          grid-template-columns: 1fr;
+          padding: 90px 1rem 2rem;
+        }
+        .c-hero,
+        .c-status,
+        .c-about,
+        .c-skills,
+        .c-experience,
+        .c-proj-1,
+        .c-proj-2,
+        .c-proj-3,
+        .c-education,
+        .c-contact {
+          grid-column: span 1;
+          grid-row: span 1;
+        }
+        .c-hero {
+          flex-direction: column-reverse;
+          text-align: center;
+        }
+        .hero-btns {
+          justify-content: center;
+        }
+        .hero-terminal {
+          display: none;
+        }
+        .c-contact {
+          flex-direction: column;
+          text-align: center;
+          align-items: center;
+        }
+        .contact-links {
+          justify-content: center;
+        }
+      }
+    </style>
   </head>
-<body class="bg-dark d-flex flex-column min-vh-100">
-<div class="container py-4">
-
-
-    <!--- Header Name Banner -->            
-    <div class="text-white bg-dark text-center py-5">
-        <p class="Teko_font display-4">Hey 👋 I'm</p>
-        <img src="img/Cover.jpg" style="width: 300px;" class="rounded">
-        <p class="Lobster_font display-1">Priyanthan Mahindaraj</p>
-        <span class="Teko_font display-4 text-uppercase"> DEVELOPER - DESIGNER - IT Support Specialist </span><br>
-        <div class="btn-group my-2">
-            <a class="btn btn-outline-light" href="https://github.com/PRIYAN00" target="_blank"><i class="fa fa-github"></i> GitHub </a>
-            <a class="btn btn-outline-primary"  href="https://www.linkedin.com/in/priyanthan00/" target="_blank"> <i class="fa fa-linkedin"></i> Linkdin</a>
-        </div>
+  <body>
+    <!-- BG Orbs -->
+    <div class="orbs">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
     </div>
-    <!--- Header Name Banner -->
-    
-</div>
-</body>
-<body>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ" crossorigin="anonymous"></script>
+
+    <!-- NAV -->
+    <nav class="nav glass" id="nav">
+      <div class="nav-inner">
+        <a href="#" class="nav-logo">priyanthan<span>.dev</span></a>
+
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#education">Education</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+            <i class="fas fa-sun" id="themeIcon"></i>
+          </button>
+          <button class="hamburger" id="hamburger" aria-label="Menu">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Mobile Nav -->
+    <div class="mobile-nav" id="mobileNav">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </div>
+
+    <!-- GRID -->
+    <main class="grid">
+      <!-- HERO -->
+      <div id="home" class="card glass c-hero">
+        <div class="hero-text">
+          <div class="eyebrow">Platform Engineer L2</div>
+          <h1 class="hero-name">
+            Priyanthan<br /><span class="grad">Mahindaraj</span>
+            <span
+              style="font-size: 0.55em; color: var(--muted); font-weight: 400">
+              BSc (Hons)</span
+            >
+          </h1>
+          <p class="hero-role">
+            $ sysadmin · infra-as-code · containerization · cloud
+          </p>
+          <p class="hero-bio">
+            Analytical Platform & Systems Engineer designing resilient
+            infrastructure, security ecosystems, and automated delivery
+            pipelines. Managing high-availability environments as a US
+            contractor while building IaC-first platforms on top-tier
+            open-source tooling.
+          </p>
+          <div class="hero-btns">
+            <a
+              href="mailto:priyanthan.mahindaraj@outlook.com"
+              class="btn btn-primary">
+              <i class="fas fa-envelope"></i> Get In Touch
+            </a>
+            <a
+              href="https://linkedin.com/in/priyanthan00"
+              target="_blank"
+              class="btn">
+              <i class="fab fa-linkedin"></i> LinkedIn
+            </a>
+          </div>
+        </div>
+        <!-- Terminal widget -->
+        <div class="hero-terminal">
+          <div class="term-bar">
+            <div class="term-dot"></div>
+            <div class="term-dot"></div>
+            <div class="term-dot"></div>
+          </div>
+          <div class="term-body">
+            <div class="term-line">
+              <span class="term-prompt">~$</span>
+              <span class="term-cmd">whoami</span>
+            </div>
+            <div class="term-line">
+              <span class="term-out">priyanthan</span>
+            </div>
+            <div class="term-line" style="margin-top: 4px">
+              <span class="term-prompt">~$</span>
+              <span class="term-cmd">uptime</span>
+            </div>
+            <div class="term-line"><span class="term-out">4+ years</span></div>
+            <div class="term-line" style="margin-top: 4px">
+              <span class="term-prompt">~$</span>
+              <span class="term-cmd">kubectl get pods</span>
+            </div>
+            <div class="term-line">
+              <span class="term-out">all Running ✓</span>
+            </div>
+            <div class="term-line" style="margin-top: 4px">
+              <span class="term-prompt">~$</span>
+              <span class="term-cursor"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATUS -->
+      <div id="status" class="card glass c-status">
+        <div class="eyebrow">Live Status</div>
+        <div class="status-row">
+          <div class="dot-green"></div>
+          <span>Available for consulting & deployments</span>
+        </div>
+        <div class="stat-row">
+          <div class="stat">
+            <span class="stat-n">4+</span>
+            <div class="stat-l">Years Exp</div>
+          </div>
+          <div class="stat">
+            <span class="stat-n">12+</span>
+            <div class="stat-l">Deployments</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABOUT -->
+      <div id="about" class="card glass c-about">
+        <div class="eyebrow">About</div>
+        <p class="about-text">
+          Platform & Systems Engineer holding a BSc (Hons) in Computing Science
+          from Kingston University, UK. Operating globally as an independent
+          contractor, I specialise in IaC paradigms, security perimeters, and
+          microservice architectures — building platforms that give developers a
+          seamless, safe deployment sandbox.
+        </p>
+      </div>
+
+      <!-- SKILLS -->
+      <div id="skills" class="card glass c-skills">
+        <div class="eyebrow">Skills</div>
+        <div class="card-title">
+          <i class="fas fa-code-branch"></i> Technical Stack
+        </div>
+
+        <div class="skill-group">
+          <div class="skill-cat">Cloud & Virtualisation</div>
+          <div class="tags">
+            <span class="tag">Proxmox VE</span><span class="tag">Docker</span>
+            <span class="tag">Kubernetes (K3s)</span
+            ><span class="tag">Portainer</span> <span class="tag">AWS</span
+            ><span class="tag">Azure</span>
+            <span class="tag">TrueNAS</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <div class="skill-cat">Automation & IaC</div>
+          <div class="tags">
+            <span class="tag">Terraform</span><span class="tag">Ansible</span>
+            <span class="tag">Docker Compose</span
+            ><span class="tag">GitHub Actions</span>
+            <span class="tag">Bash Scripting</span><span class="tag">Git</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <div class="skill-cat">Security & SIEM</div>
+          <div class="tags">
+            <span class="tag">Wazuh SIEM</span
+            ><span class="tag">System Hardening</span>
+            <span class="tag">pfSense</span><span class="tag">Vault</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <div class="skill-cat">Monitoring & Telemetry</div>
+          <div class="tags">
+            <span class="tag">Zabbix Enterprise</span>
+            <span class="tag">Grafana</span>
+            <span class="tag">Custom Webhooks</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <div class="skill-cat">Networking & Traffic</div>
+          <div class="tags">
+            <span class="tag">Nginx Proxy Manager</span>
+            <span class="tag">Cloudflare</span>
+            <span class="tag">Pi-hole / AdGuard</span>
+            <span class="tag">VLAN Subnetting</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <div class="skill-cat">Systems & Programming</div>
+          <div class="tags">
+            <span class="tag">Ubuntu / Debian</span
+            ><span class="tag">RHEL</span>
+            <span class="tag">Active Directory</span>
+            <span class="tag">PHP</span><span class="tag">Java</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXPERIENCE -->
+      <div id="experience" class="card glass c-experience">
+        <div class="eyebrow">Experience</div>
+        <div class="card-title">
+          <i class="fas fa-briefcase"></i> Professional History
+        </div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-role">
+              Platform Engineer L2 / System Administrator
+            </div>
+            <div class="tl-meta">
+              US Contractor (Remote) · Jul 2025 – Present
+            </div>
+            <ul class="tl-bullets">
+              <li>
+                Maintain, architect, and optimise mission-critical cloud and
+                virtualisation infrastructure for enterprise applications.
+              </li>
+              <li>
+                Provision, configure, and scale virtual environments dynamically
+                utilising Infrastructure as Code (Terraform).
+              </li>
+              <li>
+                Design and execute enterprise telemetry and monitoring setups
+                utilising Zabbix, customised script modules, and webhook
+                delivery layers.
+              </li>
+              <li>
+                Construct pipeline logic and integrations between monitoring
+                layers and automated ITSM systems for zero-touch incident
+                creation.
+              </li>
+              <li>
+                Manage containerised workloads, ingress endpoints, secure
+                certificate rotations, and application tracking controls.
+              </li>
+            </ul>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-role">IT Support Specialist (L1)</div>
+            <div class="tl-meta">Kochasoft Sri Lanka · Dec 2022 – Jul 2025</div>
+            <ul class="tl-bullets">
+              <li>
+                Provided Level 1 technical support for global enterprise clients
+                with strict SLAs.
+              </li>
+              <li>
+                Managed user onboarding/offboarding in Azure AD, Exchange, and
+                Intune.
+              </li>
+              <li>
+                Architected and configured enterprise monitoring with Zabbix and
+                custom scripts.
+              </li>
+              <li>
+                Built custom webhook connector between Zabbix and HPSM for
+                automated ticket generation.
+              </li>
+              <li>
+                Implemented CI/CD pipelines using GitHub Actions for company
+                website deployment.
+              </li>
+            </ul>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-role">Assistant Office Administrator</div>
+            <div class="tl-meta">
+              Kochasoft Sri Lanka (Part-time) · Jul 2022 – Dec 2022
+            </div>
+            <ul class="tl-bullets">
+              <li>
+                Provided technical support focusing on cloud directory setups
+                and collaborative email pipeline troubleshooting.
+              </li>
+              <li>
+                Supported internal tools, hosting operations, and CMS for
+                internal and client-facing sites.
+              </li>
+            </ul>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-role">IT Technician</div>
+            <div class="tl-meta">Mylinx Pvt Ltd · Jul 2019 – Jan 2020</div>
+            <ul class="tl-bullets">
+              <li>
+                Executed structural hardware diagnostics, physical network
+                terminations, and LAN setups.
+              </li>
+              <li>
+                Deployed localised CCTV monitoring systems and managed domain
+                registry entries.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROJECT 1 -->
+      <div id="projects" class="card glass c-proj-1">
+        <div class="eyebrow">Project</div>
+        <div class="proj-icon"><i class="fas fa-server"></i></div>
+        <div class="proj-name">Automated Bare-Metal Datacenter Lab</div>
+        <div class="proj-desc">
+          Enterprise-grade hypervisor cluster managed entirely via IaC to
+          simulate high-availability container workloads and monitoring planes.
+        </div>
+        <ul class="proj-list">
+          <li>
+            <strong>Proxmox VE:</strong> Automated node builds & LXC templates
+          </li>
+          <li>
+            <strong>Portainer Stacks:</strong> Multi-container app delivery
+            (Vaultwarden)
+          </li>
+          <li>
+            <strong>Wazuh SIEM:</strong> Continuous audit streams & log
+            collection
+          </li>
+          <li>
+            <strong>Networking:</strong> Zabbix, Nginx Proxy Manager, Pi-hole
+            DNS
+          </li>
+        </ul>
+        <div class="tags mt-a">
+          <span class="tag">Terraform</span><span class="tag">Proxmox VE</span
+          ><span class="tag">Docker Compose</span>
+        </div>
+      </div>
+
+      <!-- PROJECT 2 -->
+      <div class="card glass c-proj-2">
+        <div class="eyebrow">Project</div>
+        <div class="proj-icon"><i class="fas fa-route"></i></div>
+        <div class="proj-name">Intelligent Webhook Routing Architecture</div>
+        <div class="proj-desc">
+          Production-tier telemetry delivery pipeline parsing system-critical
+          alerts from monitoring nodes, normalising data, and routing structured
+          JSON to corporate ITSM engines.
+        </div>
+        <div class="tags mt-a">
+          <span class="tag">Zabbix API</span><span class="tag">HPSM Core</span
+          ><span class="tag">Webhooks</span><span class="tag">JSON</span>
+        </div>
+      </div>
+
+      <!-- PROJECT 3 -->
+      <div class="card glass c-proj-3">
+        <div class="eyebrow">Project</div>
+        <div class="proj-icon"><i class="fas fa-tools"></i></div>
+        <div class="proj-name">Gadgetz CMS — Repair Ops Platform</div>
+        <div class="proj-desc">
+          Self-hosted, secure asset management system for logging laptop
+          modifications, physical diagnostics, tracking matrices, and repair
+          history.
+        </div>
+        <div class="tags mt-a">
+          <span class="tag">PHP App Engine</span
+          ><span class="tag">Self-Hosting</span
+          ><span class="tag">Asset Tracking</span>
+        </div>
+      </div>
+
+      <!-- EDUCATION -->
+      <div id="education" class="card glass c-education">
+        <div class="eyebrow">Education & Credentials</div>
+        <div class="edu-grid">
+          <div class="edu-item">
+            <div class="edu-degree">BSc (Hons) Computing Science</div>
+            <div class="edu-school">Kingston University, UK</div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-degree">BTEC HND in Computing</div>
+            <div class="edu-school">ESOFT Metro Campus</div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-degree">Ethical Hacker & IT Essentials</div>
+            <div class="edu-school">Cisco Networking Academy</div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-degree">CCNA: Introduction to Networks</div>
+            <div class="edu-school">Cisco Certification</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTACT -->
+      <div id="contact" class="card glass c-contact">
+        <div>
+          <div class="eyebrow">Contact</div>
+          <div class="contact-heading">Ready to build resilient platforms?</div>
+          <div class="contact-sub">
+            <span style="color: var(--green)">●</span>&nbsp; Available for
+            consulting and deployment roles
+          </div>
+        </div>
+        <div class="contact-links">
+          <a
+            href="mailto:priyanthan.mahindaraj@outlook.com"
+            class="contact-link">
+            <i class="fas fa-envelope"></i> priyanthan.mahindaraj@outlook.com
+          </a>
+          <a href="tel:+94775740218" class="contact-link">
+            <i class="fas fa-phone"></i> +94 77 574 0218
+          </a>
+          <a
+            href="https://linkedin.com/in/priyanthan00"
+            target="_blank"
+            class="contact-link">
+            <i class="fab fa-linkedin"></i> LinkedIn
+          </a>
+        </div>
+      </div>
+    </main>
+
+    <footer>&copy; 2026 Priyanthan Mahindaraj · Built with precision</footer>
+
+    <script>
+      // Theme toggle
+      const btn = document.getElementById("themeBtn");
+      const icon = document.getElementById("themeIcon");
+      const html = document.documentElement;
+      const saved = localStorage.getItem("theme");
+      const sysDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      let theme = saved || (sysDark ? "dark" : "light");
+      applyTheme(theme);
+
+      btn.addEventListener("click", () => {
+        theme = theme === "dark" ? "light" : "dark";
+        applyTheme(theme);
+        localStorage.setItem("theme", theme);
+      });
+
+      function applyTheme(t) {
+        html.setAttribute("data-theme", t);
+        icon.className = t === "dark" ? "fas fa-sun" : "fas fa-moon";
+      }
+
+      // Hamburger
+      const hamburger = document.getElementById("hamburger");
+      const mobileNav = document.getElementById("mobileNav");
+      hamburger.addEventListener("click", () => {
+        hamburger.classList.toggle("open");
+        mobileNav.classList.toggle("open");
+      });
+      mobileNav.querySelectorAll("a").forEach((a) =>
+        a.addEventListener("click", () => {
+          hamburger.classList.remove("open");
+          mobileNav.classList.remove("open");
+        }),
+      );
+
+      // Nav scroll shadow
+      const nav = document.getElementById("nav");
+      window.addEventListener("scroll", () => {
+        nav.classList.toggle("scrolled", window.scrollY > 40);
+      });
+
+      // Smooth scroll
+      document.querySelectorAll('a[href^="#"]').forEach((a) => {
+        a.addEventListener("click", (e) => {
+          const t = document.querySelector(a.getAttribute("href"));
+          if (t) {
+            e.preventDefault();
+            t.scrollIntoView({ behavior: "smooth" });
+          }
+        });
+      });
+
+      // Staggered card reveal
+      const cards = document.querySelectorAll(".card");
+      const obs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((en) => {
+            if (en.isIntersecting) {
+              en.target.classList.add("visible");
+              obs.unobserve(en.target);
+            }
+          });
+        },
+        { threshold: 0.08, rootMargin: "0px 0px -20px 0px" },
+      );
+
+      cards.forEach((card, i) => {
+        card.style.transitionDelay = `${Math.min(i, 5) * 0.07}s`;
+        obs.observe(card);
+      });
+
+      // Body fade-in
+      document.body.style.opacity = "0";
+      document.body.style.transition = "opacity 0.45s ease";
+      window.addEventListener("load", () => {
+        document.body.style.opacity = "1";
+      });
+    </script>
   </body>
 </html>
